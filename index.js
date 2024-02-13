@@ -31,6 +31,14 @@ async function run() {
       res.send(result);
     })
 
+    // Posting new task to the Database
+    app.post("/allTasks", async(req, res) => {
+      const newTask = req.body;
+      console.log(newTask);
+      const result = await allTasksCollection.insertOne(newTask);
+      res.send(result);
+    });
+
 
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
