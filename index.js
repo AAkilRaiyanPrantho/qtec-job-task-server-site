@@ -3,7 +3,7 @@ const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 5000;
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 //middlewares
 app.use(cors());
@@ -31,6 +31,15 @@ async function run() {
       res.send(result);
     })
 
+    // Reading individual data
+     // Read data to Update assignments
+     app.get("/allTasks/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await allTasksCollection.findOne(query);
+      res.send(result);
+    })
+
     // Posting new task to the Database
     app.post("/allTasks", async(req, res) => {
       const newTask = req.body;
@@ -38,6 +47,15 @@ async function run() {
       const result = await allTasksCollection.insertOne(newTask);
       res.send(result);
     });
+
+    // Deleting Tasks
+     // Delete Operations
+     app.delete('/allTasks/:id', async(req,res) =>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await allTasksCollection.deleteOne(query);
+      res.send(result);
+    })
 
 
     // Connect the client to the server	(optional starting in v4.7)
