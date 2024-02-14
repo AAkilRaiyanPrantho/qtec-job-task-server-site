@@ -76,6 +76,19 @@ async function run() {
       res.send(result);
     })
 
+    // Patching the complete functionality
+    app.patch("/allTasks/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const updatedDoc = {
+        $set: {
+          status: "Completed"
+        }
+      }
+      const result = await allTasksCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    })
+
 
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
